@@ -17,11 +17,19 @@
   },
   "homepage": "https://github.com/winsan-zhang/website-test#readme",
   "devDependencies": {
+    "autoprefixer": "^6.5.1",
     "babel-core": "^6.17.0",
     "babel-loader": "^6.2.5",
     "babel-preset-es2015": "^6.16.0",
     "babel-preset-react": "^6.16.0",
+    "css-loader": "^0.25.0",
+    "html-webpack-plugin": "^2.22.0",
     "json-loader": "^0.5.4",
+    "node-sass": "^3.10.1",
+    "postcss": "^5.2.4",
+    "postcss-loader": "^1.0.0",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1",
     "webpack": "^1.13.2"
   },
   "dependencies": {

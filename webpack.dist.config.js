@@ -7,8 +7,8 @@ module.exports = {
     devtool: 'eval-source-map',
     entry: __dirname +  '/app/scripts/main.js',
     output: {
-        path: __dirname + '/public',
-        filename: 'index_bundle.js'
+        path: __dirname + '/dist',
+        filename: index_bundle.js
     },
 
     module: {
@@ -25,11 +25,11 @@ module.exports = {
                 }
             },
             {
-                test: /\.css$/,
+                test: /\.css/,
                 loader: 'style-loader!css-loader!postcss'
             },
             {
-                test: /\.scss$/,
+                test: /\.scss/,
                 loader: 'style-loader!css-loader!postcss!sass-loader?outputStyle=expanded'
             }
         ]
@@ -38,12 +38,12 @@ module.exports = {
         require('autoprefixer')
     ],
     plugins: [
-        new HtmlWebpackPlugin({
-            template: __dirname + '/app/index.tmpl.html'
-        })
-    ],
-    devServer: {
 
-    }
+    	new webpack.optimize.OccureanceOrderPlugin(),
+    	new webpack.optimize.UglifyJsPlugin(),
+    	new HtmlWebpackPlugin({
+    		template: __dirname + '/app/index.tmpl.html'
+    	})
+    ]
 
 }
