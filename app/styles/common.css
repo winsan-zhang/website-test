@@ -22,6 +22,7 @@ li{
 	transform: rotate(90deg);
 }
 
+
 /*工具*/
 .fl{
 	float: left;
@@ -44,7 +45,76 @@ li{
 	display: none;
 }
 /*公用样式*/
+/*内容显示部分的标题，内容 按钮等公用样式*/
+.content-sec{
+    padding-top: 50px;
+    text-align: center;
+}
+.content-sec-wrap{
+    padding: 10px 60px 70px 60px;
+    margin: 0 80px;
+}
+.content-sec-title {
+	font-size: 50px;
+}
+.content-sec-p {
+	font-size: 18px;
+    line-height: 30px;
+	font-family: 'Montserrat', Helvetica, Arial, Lucida, sans-serif;
+	color: #bdbdbd;
+}
 .container{
-	width: 808px;
+	width: 80%;
 	margin: 0 auto;
+	position: relative;
+}
+/*纯图片为内容公共样式*/
+.content-sec-img{
+    display: block;
+    width: 100%;
+}
+/*按钮公共属性*/
+.btn{
+	height: 38px;
+	border: 2px solid #98a5b9;
+	border-radius: 5px;
+	box-sizing: border-box;
+	background-color: transparent;
+}
+
+.btn-a{
+	display: block;
+	font-weight: bold;
+	line-height: 32px;
+	color: rgba(255,255,255,0.8);
+	transition: 0.2s;
+	vertical-align: middle;
+	letter-spacing: 2px;
+	position: relative;
+}
+.btn-a:hover{
+	padding-right: 15px;
+}
+.btn-a:hover .right-arrow{
+	opacity: 1;
+}
+.right-arrow{
+    padding: 0 3px;
+    position: absolute;
+    right: 0;
+    opacity: 0;
+    font-size: 14px;
+    font-weight: bold;
+    /*vertical-align: middle;*/
+    transition: 0.2s;
+}
+/*垂直居中*/
+.center-table {
+	height: 100%;
+	display: table;
+	position: relative;
+}
+.center-table-cell{
+	display: table-cell;
+	vertical-align: middle;
 }

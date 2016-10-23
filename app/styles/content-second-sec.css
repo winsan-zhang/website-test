@@ -1,0 +1,29 @@
+.content-second-sec{
+    background-color: #f3ede7;
+}
+.content-second-wrap{
+    display: inline-block;
+    padding: 50px 0;
+    text-align: center;
+}
+.content-second-item{
+    float: left;
+    margin-right: 6%;
+    width: 20%;
+    padding: 0 5px;
+    font-size: 16px;
+    line-height: 30px;
+    color: #98a5b9;
+    box-sizing: border-box;
+}
+.content-second-title{
+    color: rgba(191,77,46,1);
+    margin-bottom: 5px;
+}
+.content-second-item:nth-last-child(1){
+    margin-right: 0;
+
+}
+.content-second-icon{
+    margin-bottom: 30px;
+}
