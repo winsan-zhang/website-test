@@ -19,9 +19,10 @@
     font-family: 'Montserrat', Helvetica, Arial, Lucida, sans-serif;
     color: #98a5b9;
 }
-.btn-process{
+.btn-sign_up {
     background-color: rgba(191,77,46,1);
     border-color: rgba(191,77,46,1);
+    animation: bgColors 3s ease-in-out both infinite;
 }
 .btn-live-site{
     margin-left: 10px;
@@ -40,4 +41,20 @@
     border-radius: 50%;
     box-sizing: border-box;
     transition: 0.5s ease-in-out;
+
+}
+
+@keyframes bgColors {
+    0%{
+        background-color: rgba(191,77,46,1);
+        box-shadow: 0 0 10px rgba(191,77,46,1);
+    }
+    50%{
+        background-color: transparent;
+        box-shadow: none;
+    }
+    100%{
+        background-color: rgba(191,77,46,1);
+        box-shadow: 0 0 10px rgba(191,77,46,1);
+    }
 }

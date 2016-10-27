@@ -1,14 +1,19 @@
 
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
 
     devtool: 'eval-source-map',
-    entry: __dirname +  '/app/scripts/main.js',
+    entry: {
+        index: __dirname +  '/app/scripts/main-index.js',
+        signUp: __dirname +  '/app/scripts/main-signUp.js',
+        vendors: ['jquery', 'react', 'react-dom']
+    },
     output: {
         path: __dirname + '/public',
-        filename: 'index_bundle.js'
+        filename: '[name].js'
     },
 
     module: {
@@ -26,7 +31,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: 'style-loader!css-loader!postcss'
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss')
             },
             {
                 test: /\.scss$/,
@@ -43,12 +48,20 @@ module.exports = {
     ],
     plugins: [
         new HtmlWebpackPlugin({
-            template: __dirname + '/app/index.tmpl.html'
+            template: __dirname + '/app/index.tmpl.html',
+            chunk: ['index'],
+            filename: 'index.html'
+        }),
+        new HtmlWebpackPlugin({
+           template: __dirname + '/app/signUp.tmpl.html',
+            chunk: ['signUp'],
+            filename: 'signUp.html'
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery'
-        })
+        }),
+        new ExtractTextPlugin('[name].css')
 
     ],
     devServer: {

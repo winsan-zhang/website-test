@@ -1,0 +1,140 @@
+.sign-up{
+    width: 100%;
+    height: 500px;
+    background: url("../images/casestudy-hero-bg.jpg")no-repeat;
+    background-size: cover;
+}
+.sign-up-wrap {
+    width: 100%;
+    height: 100%;
+    padding-top: 1px;
+    box-sizing: border-box;
+}
+.sign-form{
+    margin: 90px auto;
+    width: 60%;
+    max-width: 350px;
+    border: 1px solid rgba(70, 100, 31, 0.23);
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 30px 50px;
+    background-color: #fff;
+    animation: show 1s linear;
+}
+
+@keyframes show {
+    0%{
+        margin-top: 120px;
+        opacity: 0;
+    }
+    100%{
+        margin-top: 90px;
+        opacity: 1;
+    }
+}
+.sign-form{
+
+}
+.form-title{
+}
+.form-input{
+    display: block;
+    margin: 20px 0;
+    height: 40px;
+    width: 90%;
+    padding-left: 40px;
+    border-radius: 5px;
+    border: 1px solid rgba(70, 100, 31, 0.23);
+    box-sizing: border-box;
+}
+.username-input{
+    background: url("../images/login-icon.png") no-repeat 0 center;
+}
+.password-input{
+    background: url("../images/pwd-icon.png") no-repeat 0 center;
+}
+.verify-code{
+    width: 90px;
+    padding-left: 3px;
+    margin-right: 20px;
+}
+.form-btn{
+    outline: none;
+    height: 35px;width: 90px;
+    margin-right: 15px;
+    border-radius: 3px;
+    border: 1px solid  #3c414a;
+    cursor: pointer;
+    background-color: transparent;
+}
+.submit-btn{
+    color: #fff;
+    background-color: #4dca8e;
+    border: 1px solid #4dca8e;
+}
+.submit-btn:hover{
+    background-color: #52ba7c;
+}
+.signIn-btn{
+    border: 1px solid #838fa7;
+}
+.signIn-btn:hover{
+    border: 1px solid #4dca8e;
+    box-shadow: 0 0 5px #4dca8e;
+}
+.form-btn-a{
+    display: block;
+    color: #3c414a;
+}
+
+@media only screen and (max-width: 680px) {
+    .sign-up-wrap {
+        width: 100%;
+        height: 100%;
+        padding-top: 1px;
+        box-sizing: border-box;
+    }
+    .sign-form{
+        margin: 90px auto;
+        width: 90%;
+        max-width: 350px;
+        min-width: 260px;
+        border: 1px solid rgba(70, 100, 31, 0.23);
+        border-radius: 5px;
+        /*box-sizing: border-box;*/
+        padding: 25px 25px;
+        background-color: #fff;
+        animation: show 1s linear;
+    }
+    .form-input{
+        display: block;
+        margin: 15px 0;
+        height: 50px;
+        width: 100%;
+        padding-left: 40px;
+        border-radius: 5px;
+        border: 1px solid rgba(70, 100, 31, 0.23);
+        box-sizing: border-box;
+    }
+    .verify-code{
+        width: 45%;
+        padding-left: 3px;
+        margin-right: 10px;
+    }
+    .form-btn{
+        display: block;
+        outline: none;
+        height: 50px;
+        width: 100%;
+        margin: 5px 0;
+        border-radius: 3px;
+        border: 1px solid  #3c414a;
+        cursor: pointer;
+        background-color: transparent;
+    }
+    .submit-btn{
+        color: #fff;
+        background-color: #4dca8e;
+        border: 1px solid #4dca8e;
+    }
+}

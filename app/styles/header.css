@@ -91,6 +91,7 @@
         display: none;
         margin-top: 79px;
         padding: 40px 50px;
+        border-top: 3px solid #4dca8e;
         background-color: rgba(34,37,44,1);
     }
     .header-nav-item{

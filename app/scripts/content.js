@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from  'react-dom';
 
-import ContentEntrySec from './content-entry-sec';
-import ContentSecondSec from './content-second-sec';
-import ContentThirdSec from './content-third-sec';
-import ContentFourthSec from './content-fourth-sec';
-import ContentFifthSec from './content-fifth-sec';
+import ContentEntrySec from './content-entry-sec.js';
+import ContentSecondSec from './content-second-sec.js';
+import ContentThirdSec from './content-third-sec.js';
+import ContentFourthSec from './content-fourth-sec.js';
+import ContentFifthSec from './content-fifth-sec.js';
 
 class Content extends React.Component{
     render(){

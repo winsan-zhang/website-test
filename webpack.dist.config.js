@@ -6,12 +6,13 @@ module.exports = {
 
     devtool: 'eval-source-map',
     entry: {
-        app:__dirname +  '/app/scripts/main.js',
+        index: __dirname +  '/app/scripts/main-index.js',
+        signUp: __dirname + '/app/scripts/main-signUp.js',
         vendors: ['jquery', 'react', 'react-dom']
     },
     output: {
         path: __dirname + '/dist',
-        filename: 'index_bundle.js'
+        filename: '[name].js'
     },
 
     module: {
@@ -49,9 +50,17 @@ module.exports = {
         new webpack.optimize.OccurenceOrderPlugin(),
     	new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
-        new ExtractTextPlugin('styles.css'),
+        new ExtractTextPlugin('[name].css'),
         new HtmlWebpackPlugin({
-            template: __dirname + '/app/index.tmpl.html'
+            template: __dirname + '/app/index.tmpl.html',
+            //chunks这个参数告诉插件要引用entry里面的哪几个入口
+            chunk: ['index', "vendor"],
+            filename: 'index.html'
+        }),
+        new HtmlWebpackPlugin({
+            template: __dirname + '/app/signUp.tmpl.html',
+            chunk: ['signUp', 'vendors'],
+            filename: 'signUp.html'
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',
