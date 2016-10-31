@@ -42,6 +42,11 @@
     border-radius: 5px;
     border: 1px solid rgba(70, 100, 31, 0.23);
     box-sizing: border-box;
+    outline: none;
+}
+.form-input:focus{
+    border: 1px solid rgba(42, 79, 251, 1);
+    box-shadow: 0 0 5px rgba(42, 79, 251, 0.6);
 }
 .username-input{
     background: url("../images/login-icon.png") no-repeat 0 center;
@@ -50,10 +55,15 @@
     background: url("../images/pwd-icon.png") no-repeat 0 center;
 }
 .verify-code{
+    display: inline-block;
     width: 90px;
     padding-left: 3px;
     margin-right: 20px;
     margin-bottom: 20px;
+}
+.verifyImg{
+    margin-top: 10px;
+    cursor: pointer;
 }
 .form-btn{
     outline: none;
@@ -85,11 +95,14 @@
 }
 /*用户名及密码信息提示*/
 .tips{
-    color: #f00;
-    display: inline-block;
+    color: rgba(255, 0, 0, 0.67);
+    display: block;
+    margin: 5px 0;
+    padding-left: 10px;
     visibility: hidden;
     height: 14px;
     font-size: 14px;
+
 }
 
 @media only screen and (max-width: 680px) {
@@ -119,8 +132,10 @@
         border-radius: 5px;
         border: 1px solid rgba(70, 100, 31, 0.23);
         box-sizing: border-box;
+        outline: none;
     }
     .verify-code{
+        display: inline-block;
         width: 45%;
         padding-left: 3px;
         margin-right: 10px;
