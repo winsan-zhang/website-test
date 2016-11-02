@@ -6,13 +6,15 @@
 
     if($usr_name == "winsan"){
         $success = 0;
-        $msg = "fuck";
-        $resData = '{ "success": '.$success.'}';
+        $msg = "该用户名已被注册，请更换";
+        $resData = array("success"=>$success, "msg"=>$msg);
+        $resData = json_encode($resData);
         echo $resData;
     }else {
         $success = 1;
-        $msg = "success";
-        $resData = '{ "success": '.$success.', "msg": '.$msg.'}';
+        $msg = "该用户名可以使用";
+        $resData = array("success"=>$success, "msg"=>$msg);
+        $resData = json_encode($resData);
         echo $resData;
     }
 

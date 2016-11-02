@@ -104,9 +104,10 @@ class SignUp extends React.Component{
         this.state = {
             verify: null,//验证码初始化
             urnInputStyle: {},//用户名输入框样式状态
-            pwdInputStyle: {},//密码输入框样式状态
             urnTipStyle: {},//用户名提示条样式状态
-            pwdTipStyle: {}//密码提示条样式状态
+            pwdInputStyle: {},//密码输入框样式状态
+            pwdTipStyle: {},//密码提示条样式状态
+            submitDisabled: "false"//提交按钮是否可用，默认为不可用
         }
     }
 
@@ -195,83 +196,111 @@ class SignUp extends React.Component{
     changeVerify(){
         this.ajaxForVerify();
     }
+    //输入框数据错误显示错误样式函数
+    showErr(elementDom, msg){
+        elementDom.innerHTML = msg;
+        this.setState({
+            urnInputStyle: {
+                borderColor: "rgba(255, 0, 0, 0.6)",
+                boxShadow: "0 0 5px rgba(255, 0, 0, 0.67)"
+            },
+            urnTipStyle: {
+                visibility: "visible"
+            }
+        });
+    };
+    //输入框获得焦点显示样式函数
+    showFocus(refName){
+        if(refName == "username"){
+            this.setState({
+                urnInputStyle: {
+                    borderColor: "#047CEE",
+                    boxShadow: "0 0 5px #047CEE"
+                },
+                urnTipStyle: {
+                    visibility: "hidden"
+                }
+            });
+        }else if(refName == "password"){
+            this.setState({
+                pwdInputStyle: {
+                    borderColor: "#047CEE",
+                    boxShadow: "0 0 5px #047CEE"
+                },
+                pwdTipStyle: {
+                    visibility: "hidden"
+                }
+            });
+        }
+
+    }
+    //输入框数据合法时显示样式函数
+    showSuccess(elementDom, msg){
+        elementDom.textContent = msg;
+        this.setState({
+            urnInputStyle: {
+                borderColor: "#4dca8e",
+                boxShadow: "0 0 5px #4dca8e"
+            },
+            urnTipStyle: {
+                visibility: "visible",
+                color: "#4dca8e"
+            }
+        });
+    }
     //input输入宽失去焦点事件
     usernameOnBlur(){
         //输入框失去焦点通过ajax进行服务器查询是否合法
         let usernameDom = ReactDOM.findDOMNode(this.refs.username); //获取输入框dom
         let usernameTipDom = ReactDOM.findDOMNode(this.refs.usernameTip);//获取提示框dom
         let resMsg = null;//存储返回的信息
-        $.ajax({
-            type: "POST",
-            url: "../server/sign.php",
-            //dataType: "json",
-            data: {
-                username: usernameDom.value
-            },
-            success: function(data) {
-                alert(data.success);
-                //if (data.success != 1) {
-                //    resMsg = data.msg;
-                //    console.log(data.success);
-                //    //显示错误状态
-                //    usernameTipDom.textContent = resMsg;
-                //    this.setState({
-                //        urnInputStyle: {
-                //            borderColor: "#2E43FF",
-                //            boxShadow: "0 0 5px #2E43FF"
-                //        },
-                //        urnTipStyle:{
-                //            visibility: "visible"
-                //        }
-                //    });
-                //
-                //}else {
-                //    //显示正确状态
-                //    usernameTipDom.textContent = "用户名可用";
-                //    this.setState({
-                //        urnInputStyle: {
-                //            borderColor: "#4dca8e",
-                //            boxShadow: "0 0 5px #4dca8e"
-                //        },
-                //        urnTipStyle: {
-                //            visibility: "visible",
-                //            color: "#4dca8e"
-                //        }
-                //    });
-                //}
-            }.bind(this),
-            error: function(jqXHR){
-                console.log("错误代码："+ jqXHR.status);
-            }
-        });
+        //客户端检测用户名的合法性
+        //使用正则表达式检测合法用户名（数字，字母，下划线,汉字），\u4e00-\u9fa5表示Unicode汉字字符集，\w表示字符和下划线，
+        let re = /[^\w\u4e00-\u9fa5]/g;//非字符及汉字
+        if(re.test(usernameDom.value)){
+            resMsg = "含有非法字符";
+            this.showErr(usernameTipDom, resMsg);
+        }else if(usernameDom.value.length < 6 || usernameDom.value.length > 25){
+            resMsg = "用户名的长度应在5-25个字符间";
+            this.showErr(usernameTipDom, resMsg);
+        }else {
+            //客户端检测通过后从服务器检测用户名是否被注册
+            $.ajax({
+                type: "POST",
+                url: "../server/sign.php",
+                dataType: "json",
+                data: {
+                    username: usernameDom.value
+                },
+                success: function(data) {
+                    if (data.success != 1) {
+                        resMsg = data.msg;
+                        //显示错误状态
+                        this.showErr(usernameTipDom, resMsg);
+                    }else {
+                        //显示正确状态
+                        resMsg = data.msg;
+                       this.showSuccess(usernameTipDom, resMsg);
+                    }
+                }.bind(this),
+                error: function(jqXHR){
+                    console.log("错误代码："+ jqXHR.status);
+                }
+            });
+        }
     }
     pwdOnBlur(){
        //判断输入密码是否符合要求
         let pwdDom = ReactDOM.findDOMNode(this.refs.password);
         let pwdTipDom = ReactDOM.findDOMNode(this.refs.pwdTip);
+
     }
     //input获得焦点事件
     usernameOnFocus(){
-        this.setState({
-            urnInputStyle: {
-                borderColor: "#047CEE",
-                boxShadow: "0 0 5px #047CEE"
-            },
-            urnTipStyle: {
-                visibility: "hidden"
-            }
-        });
+        this.showFocus("username");
     }
     pwdOnFocus(){
-        this.setState({
-            pwdInputStyle: {
-                borderColor: "#047CEE",
-                boxShadow: "0 0 5px #047CEE"
-            },
-            pwdTipStyle: {
-                visibility: "hidden"
-            }
-        });
+        this.showFocus("password");
     }
 
     componentDidMount(){
@@ -286,12 +315,12 @@ class SignUp extends React.Component{
                     <div className="sign-up-wrap">
                         <form action="" method="post" className="sign-form">
                             <h3 className="form-title">注册</h3>
-                            <input type="text" className="username-input form-input" name="username" placeholder="请输入用户名/邮箱/手机号"
+                            <input type="text" className="form-input username-input" name="username" placeholder="请输入用户名/邮箱/手机号"
                                     ref="username" style={this.state.urnInputStyle} onBlur={this.usernameOnBlur.bind(this)}
                                    onFocus={this.usernameOnFocus.bind(this)} required
                             />
                             <span className="tips" ref="usernameTip" style={this.state.urnTipStyle}>123</span>
-                            <input type="password" className="password-input form-input" name="password" placeholder="密码（不少于6位）"
+                            <input type="password" className="form-input password-input" name="password" placeholder="密码（不少于6位）"
                                     ref="password" style={this.state.pwdInputStyle} onBlur={this.pwdOnBlur.bind(this)}
                                    onFocus={this.pwdOnFocus.bind(this)} required
                             />
