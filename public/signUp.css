@@ -420,7 +420,8 @@ li{
     padding-left: 10px;
     visibility: hidden;
     height: 14px;
-    font-size: 14px;
+    font-size: 12px;
+    vertical-align: middle;
 
 }
 

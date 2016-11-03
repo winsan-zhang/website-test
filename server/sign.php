@@ -12,7 +12,7 @@
         echo $resData;
     }else {
         $success = 1;
-        $msg = "该用户名可以使用";
+        $msg = "ok";
         $resData = array("success"=>$success, "msg"=>$msg);
         $resData = json_encode($resData);
         echo $resData;
