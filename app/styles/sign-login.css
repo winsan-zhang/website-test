@@ -1,10 +1,10 @@
-.sign-up{
+.sign-login {
     width: 100%;
     height: 500px;
     background: url("../images/casestudy-hero-bg.jpg")no-repeat;
     background-size: cover;
 }
-.sign-up-wrap {
+.SL-form-wrap {
     width: 100%;
     height: 100%;
     padding-top: 1px;
@@ -107,7 +107,7 @@
 }
 
 @media only screen and (max-width: 680px) {
-    .sign-up-wrap {
+    .SL-form-wrap {
         width: 100%;
         height: 100%;
         padding-top: 1px;
