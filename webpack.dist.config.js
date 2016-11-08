@@ -8,9 +8,11 @@ module.exports = {
     entry: {
         index: __dirname +  '/app/scripts/main-index.js',
         signUp: __dirname + '/app/scripts/main-signUp.js',
+        login: __dirname + '/app/scripts/main-login.js',
         vendors: ['jquery', 'react', 'react-dom']
     },
     output: {
+        publicPath: './',
         path: __dirname + '/dist',
         filename: '[name].js'
     },
@@ -46,27 +48,31 @@ module.exports = {
         require('autoprefixer')
     ],
     plugins: [
-
         new webpack.optimize.OccurenceOrderPlugin(),
-    	new webpack.optimize.UglifyJsPlugin(),
+        new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
-        new ExtractTextPlugin('[name].css'),
         new HtmlWebpackPlugin({
             template: __dirname + '/app/index.tmpl.html',
             //chunks这个参数告诉插件要引用entry里面的哪几个入口
-            chunk: ['index', "vendor"],
+            chunk: ['index'],
             filename: 'index.html'
         }),
         new HtmlWebpackPlugin({
             template: __dirname + '/app/signUp.tmpl.html',
-            chunk: ['signUp', 'vendors'],
+            chunk: ['signUp'],
             filename: 'signUp.html'
+        }),
+        new HtmlWebpackPlugin({
+            template: __dirname + '/app/login.tmpl.html',
+            chunk: ['login'],
+            filename: 'login.html'
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
             "window.jQuery" : "jquery"
-        })
+        }),
+        new ExtractTextPlugin('[name].css')
     ]
 
 };

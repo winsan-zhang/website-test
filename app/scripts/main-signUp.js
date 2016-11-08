@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 
 import Header from './header.js';
 import SignUp from './signUp.js';
-import Footer from './footer.js';
 import '../styles/common.css';
 
 

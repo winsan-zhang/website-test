@@ -9,6 +9,7 @@ module.exports = {
     entry: {
         index: __dirname +  '/app/scripts/main-index.js',
         signUp: __dirname +  '/app/scripts/main-signUp.js',
+        login: __dirname +  '/app/scripts/main-login.js',
         vendors: ['jquery', 'react', 'react-dom']
     },
     output: {
@@ -56,6 +57,11 @@ module.exports = {
            template: __dirname + '/app/signUp.tmpl.html',
             chunk: ['signUp'],
             filename: 'signUp.html'
+        }),
+        new HtmlWebpackPlugin({
+           template: __dirname + '/app/login.tmpl.html',
+            chunk: ['login'],
+            filename: 'login.html'
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',

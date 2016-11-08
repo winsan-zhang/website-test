@@ -1,15 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDom from "react-dom";
 import $ from "jquery";
 
 import Header from "./header";
 import "../styles/common.css";
 import "../styles/header.css";
-import "../styles/sign-up.css";
+import "../styles/sign-login.css";
 
 $(document).ready(function(){
     let clientHeight = $(window).height();
-    $(".sign-up").css({
+    $(".sign-login").css({
         "height": clientHeight + "px"
     });
     //创建获得范围随机数函数
@@ -107,6 +107,7 @@ class SignUp extends React.Component{
             urnTipStyle: {},//用户名提示条样式状态
             pwdInputStyle: {},//密码输入框样式状态
             pwdTipStyle: {},//密码提示条样式状态
+            verifyInputStyle: {},//验证码样式状态
             urnState: false,//用户名输入框状态若为true则可以进行提交，否则无法提交
             pwdState: false,//密码输入框状态若为true则可以进行提交，否则无法提交
             verifyState: false,//验证码输入框状若为true则可以进行提交，否则无法提交
@@ -201,8 +202,9 @@ class SignUp extends React.Component{
     }
     //输入框数据错误显示错误样式函数
     showErr(elementDom, msg, refName){
-        elementDom.textContent = msg;
+
         if(refName == "username"){
+            elementDom.textContent = msg;
             this.setState({
                 urnInputStyle: {
                     borderColor: "rgba(255, 0, 0, 0.6)",
@@ -210,9 +212,11 @@ class SignUp extends React.Component{
                 },
                 urnTipStyle: {
                     visibility: "visible"
-                }
+                },
+                urnState: false
             });
         }else if(refName == "password"){
+            elementDom.textContent = msg;
             this.setState({
                 pwdInputStyle: {
                     borderColor: "rgba(255, 0, 0, 0.6)",
@@ -220,14 +224,16 @@ class SignUp extends React.Component{
                 },
                 pwdTipStyle: {
                     visibility: "visible"
-                }
+                },
+                pwdState: false
             });
         }else if(refName == "verify"){
             this.setState({
                 verifyInputStyle: {
                     borderColor: "rgba(255, 0, 0, 0.6)",
                     boxShadow: "0 0 5px rgba(255, 0, 0, 0.67)"
-                }
+                },
+                verifyState: false
             });
         }
 
@@ -262,8 +268,9 @@ class SignUp extends React.Component{
     }
     //输入框数据合法时显示样式函数
     showSuccess(elementDom, msg, refName){
-        elementDom.textContent = msg;
+
         if(refName == "username"){
+            elementDom.textContent = msg;
             this.setState({
                 urnInputStyle: {
                     borderColor: "#4dca8e",
@@ -276,6 +283,7 @@ class SignUp extends React.Component{
                 urnState: true
             });
         }else  if(refName == "password"){
+            elementDom.textContent = msg;
             this.setState({
                 pwdInputStyle: {
                     borderColor: "#4dca8e",
@@ -323,17 +331,17 @@ class SignUp extends React.Component{
         }else if(re.test(usernameDom.value)){
             resMsg = "含有非法字符";
             this.showErr(usernameTipDom, resMsg, "username");
-        }else if(usernameDom.value.length < 6 || usernameDom.value.length > 25){
-            resMsg = "用户名的长度应在5-25个字符间";
+        }else if(usernameDom.value.length < 6 || usernameDom.value.length > 11){
+            resMsg = "用户名的长度应在5-10个字符间";
             this.showErr(usernameTipDom, resMsg, "username");
         }else {
             //客户端检测通过后从服务器检测用户名是否被注册
             $.ajax({
                 type: "POST",
-                url: "../server/sign.php",
+                url: "../server/checkUsername.php",
                 dataType: "json",
                 data: {
-                    username: usernameDom.value
+                    checkUsername: usernameDom.value
                 },
                 success: function(data) {
                     if (data.success != 1) {
@@ -377,12 +385,33 @@ class SignUp extends React.Component{
         }
     }
     //验证码输入框失去焦点
-    verifyOnBlur(){
+    verifyOnKeyUp(){
         let verifyInput = SignUp.Dom.verifyDom;
         let inputValue = verifyInput.value;
-        if(inputValue !== this.state.verify){
-
+        let strLength = inputValue.length;
+        if(strLength < 4 || strLength > 4){
+            this.showErr(null, null, "verify");
+        }else if(strLength == 4){
+            $.ajax({
+                type: "POST",
+                url: "../server/checkVerify.php",
+                dataType: "json",
+                data: {
+                    verifyValue: inputValue
+                },
+                success: function(data){
+                    if(data.success == 1){
+                        this.showSuccess(null, null, "verify");
+                    }else if(data.success == 0){
+                        this.showErr(null, null, "verify");
+                    }
+                }.bind(this),
+                error: function(jqXHR){
+                    console.log("错误代码：" + jqXHR.status)
+                }
+            });
         }
+
     }
     //input获得焦点事件
     usernameOnFocus(){
@@ -391,22 +420,63 @@ class SignUp extends React.Component{
     pwdOnFocus(){
         this.showFocus(SignUp.Dom.pwdTipDom, "密码不能全为数字或字母，不能全为同一字符", "password");
     }
-
+    //点击注册按钮
+    onSignUp(){
+        if(this.state.verifyState != true){
+            alert("验证码错误，请重新填写");
+            SignUp.Dom.verifyDom.focus();
+        }else if(this.state.urnState != true){
+            alert("用户名格式错误，请重新填写");
+            SignUp.Dom.usernameDom.focus();
+        }else if(this.state.pwdState != true){
+            alert("密码格式错误，请重新填写");
+            SignUp.Dom.pwdDom.focus();
+        }else {
+            $.ajax({
+                url: "../server/doSignUp.php",
+                type: "post",
+                dataType: "json",
+                data: {
+                    username: SignUp.Dom.usernameDom.value,
+                    password: SignUp.Dom.pwdDom.value,
+                    verify: SignUp.Dom.verifyDom.value
+                },
+                success: function(data){
+                    switch (data.success){
+                        case 0:
+                            alert("用户名已被注册，请重新填写");
+                            SignUp.Dom.usernameDom.focus();
+                            break;
+                        case 2:
+                            alert("验证码错误，请重新填写");
+                            SignUp.Dom.verifyDom.focus();
+                            break;
+                        case 1:
+                            alert("注册成功，将跳转到登入页面");
+                            window.location = "login.html";
+                    }
+                },
+                error: function(jqXHR){
+                    console.log("错误代码：" + jqXHR.status);
+                }
+            });
+        }
+    }
     componentDidMount(){
         //第一次打开网页时显示验证码
         this.ajaxForVerify();
-        SignUp.Dom.usernameDom = ReactDOM.findDOMNode(this.refs.username); //获取输入框dom
-        SignUp.Dom.usernameTipDom = ReactDOM.findDOMNode(this.refs.usernameTip);//获取提示框dom
-        SignUp.Dom.pwdDom = ReactDOM.findDOMNode(this.refs.password);//获取密码输入框dom
-        SignUp.Dom.pwdTipDom = ReactDOM.findDOMNode(this.refs.pwdTip);//获取密码提示框dom
-        SignUp.Dom.verifyDom = ReactDOM.findDOMNode(this.refs.verify);//获取验证码输入框dom
+        SignUp.Dom.usernameDom = ReactDom.findDOMNode(this.refs.username); //获取输入框dom
+        SignUp.Dom.usernameTipDom = ReactDom.findDOMNode(this.refs.usernameTip);//获取提示框dom
+        SignUp.Dom.pwdDom = ReactDom.findDOMNode(this.refs.password);//获取密码输入框dom
+        SignUp.Dom.pwdTipDom = ReactDom.findDOMNode(this.refs.pwdTip);//获取密码提示框dom
+        SignUp.Dom.verifyDom = ReactDom.findDOMNode(this.refs.verify);//获取验证码输入框dom
     }
 
     render(){
         return (
-            <div className="sign-up">
+            <div className="sign-login">
                 <div className="container">
-                    <div className="sign-up-wrap">
+                    <div className="SL-form-wrap">
                         <form action="" method="post" className="sign-form">
                             <h3 className="form-title">注册</h3>
                             <input type="text" className="form-input username-input" name="username" placeholder="请输入用户名/邮箱/手机号"
@@ -420,11 +490,11 @@ class SignUp extends React.Component{
                             />
                             <span className="tips" ref="pwdTip" style={this.state.pwdTipStyle} >123</span>
                             <div className="verify-wrap clearfix">
-                                <input type="text" className="form-input verify-code fl" placeholder="请出入验证码" style={this.state.verifyInputStyle} ref="verify" onBlur={this.verifyOnBlur.bind(this)} required/>
+                                <input type="text" className="form-input verify-code fl" placeholder="请出入验证码" style={this.state.verifyInputStyle} ref="verify" onKeyUp={this.verifyOnKeyUp.bind(this)} required/>
                                 <canvas id="verifyImg" className="verifyImg fl" width="90px" height="40px" onClick={this.changeVerify.bind(this)}/>
                             </div>
-                            <input type="submit" className="submit-btn form-btn" value="注册" />
-                            <button className="form-btn signIn-btn"><a href="" className="form-btn-a">登录</a></button>
+                            <input type="button" className="submit-btn form-btn" value="注册" onClick={this.onSignUp.bind(this)}/>
+                            <button className="form-btn signIn-btn"><a href="login.html" className="form-btn-a">登录</a></button>
                         </form>
                     </div>
                 </div>
@@ -437,6 +507,6 @@ SignUp.Dom = {
     usernameTipDom: null,
     pwdDom: null,
     pwdTipDom: null,
-    verifyDom: null
+    verifyDom: null,
 };
 export default SignUp;

@@ -6,7 +6,11 @@
     padding: 50px 0;
     text-align: center;
 }
+.content-second-text{
+    font-size: 12px;
+}
 .content-second-title{
+    font-size: 18px;
     color: rgba(191,77,46,1);
     margin-bottom: 5px;
 }
@@ -33,7 +37,7 @@
         float: left;
         margin-bottom: 25px;
         width: 48%;
-        padding: 0 2%;
+        padding: 0 1.5%;
         font-size: 16px;
         line-height: 30px;
         color: #98a5b9;

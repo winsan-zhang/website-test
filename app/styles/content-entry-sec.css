@@ -24,7 +24,7 @@
     border-color: rgba(191,77,46,1);
     animation: bgColors 3s ease-in-out both infinite;
 }
-.btn-live-site{
+.btn-login {
     margin-left: 10px;
 }
 .next-page{
